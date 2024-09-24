@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>悩み入力フォーム</title>
+</head>
+<body>
+    <form id="troubleForm">
+        <label for="trouble">悩みを入力してください:</label><br>
+        <textarea id="trouble" name="trouble" rows="4" cols="50"></textarea><br>
+        <button type="button" onclick="submitTrouble()">送信</button>
+    </form>
+
+    <script>
+        function submitTrouble() {
+            const trouble = document.getElementById('trouble').value;
+            fetch('https://api.dify.ai/v1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer app-PuViyexKoaGmZ1FNFX55EdEu'
+                },
+                body: JSON.stringify({ trouble: trouble })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

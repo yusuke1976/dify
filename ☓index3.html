@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>悩み相談フォーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>悩み相談フォーム</h1>
+        <form id="worryForm">
+            <textarea id="worryInput" placeholder="あなたの悩みを入力してください..."></textarea>
+            <button type="submit">送信</button>
+        </form>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const worry = document.querySelector('textarea').value;
+
+            const response = await fetch('http://localhost:3000/api/chat-messages', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer app-PuViyexKoaGmZ1FNFX55EdEu',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    inputs: {},
+                    query: worry,
+                    response_mode: 'blocking'
+                })
+            });
+
+            const data = await response.json();
+            document.querySelector('#response').textContent = data.answer;
+        });
+    </script>
+</body>
+</html>

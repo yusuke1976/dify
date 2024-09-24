@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dify API Workflow Input</title>
+</head>
+<body>
+    <h1>卒業制作で何をつくればいいかわかりません</h1>
+
+    <button id="sendButton">Difyに送信</button>
+
+    <script>
+        document.getElementById("sendButton").addEventListener("click", function() {
+            const data = {
+                input_text: "卒業制作で何をつくればいいかわかりません"
+            };
+
+            fetch('https://api.dify.ai/v1/workflows/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer app-PuViyexKoaGmZ1FNFX55EdEu' // ここにDifyのAPIキーを入れてください
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log("Success:", result);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>

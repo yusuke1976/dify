@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $worry = $_POST['worry'];
     
     // recommend.phpをインクルード
-    include 'recommend.php';
+    include '2recommend.php';
 }
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h1>悩みを入力してください</h1>
-    <form method="post" action="">
+    <form method="post" action="2recommend.php">
         <label for="worry">悩み:</label><br>
         <textarea id="worry" name="worry" rows="4" cols="50"><?php echo isset($worry) ? htmlspecialchars($worry) : ''; ?></textarea><br><br>
         <input type="submit" value="送信">

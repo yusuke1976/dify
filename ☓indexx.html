@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dify ワークフロー入力</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dify ワークフロー入力</h1>
+        
+        <div id="inputFields">
+            <input type="text" id="apiKey" placeholder="APIキーを入力してください" />
+            <input type="text" id="inputField" placeholder="入力を入力してください" />
+        </div>
+        
+        <button onclick="sendMessage()">メッセージを送信</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const API_URL = 'https://api.dify.ai/v1/workflows/run';
+            const API_KEY = document.getElementById('apiKey').value;
+            const inputValue = document.getElementById('inputField').value;
+
+            if (!API_KEY) {
+                document.getElementById('result').textContent = 'エラー: APIキーを入力してください。';
+                return;
+            }
+
+            if (!inputValue) {
+                document.getElementById('result').textContent = 'エラー: 入力フィールドを入力してください。';
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        inputs: {
+                            user_input: inputValue
+                        },
+                        query: inputValue,
+                        user: "example@example.com",
+                        conversation_id: null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('result').textContent = 'メッセージが正常に送信されました。レスポンス:\n' + JSON.stringify(data, null, 2);
+                } else {
+                    throw new Error(`API request failed: ${response.status} ${response.statusText}, ${JSON.stringify(data)}`);
+                }
+            } catch (error) {
+                console.error('Error details:', error);
+                document.getElementById('result').textContent = 'エラーが発生しました: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

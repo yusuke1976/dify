@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>バーコードからAmazon書籍URL生成</title>
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <style>
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>バーコードからAmazon書籍URL生成</h1>
+    <video id="video" width="300" height="200"></video>
+    <div id="result"></div>
+
+    <script>
+        const codeReader = new ZXing.BrowserMultiFormatReader();
+        const videoElement = document.getElementById('video');
+        const resultElement = document.getElementById('result');
+
+        function getAmazonBookUrl(isbn) {
+            return `https://www.amazon.co.jp/s?k=${isbn}&i=stripbooks`;
+        }
+
+        codeReader.decodeFromVideoDevice(null, videoElement, (result, err) => {
+            if (result) {
+                const isbn = result.text;
+                const amazonUrl = getAmazonBookUrl(isbn);
+                resultElement.innerHTML = `
+                    <p>ISBN: ${isbn}</p>
+                    <p>Amazon書籍検索URL: <a href="${amazonUrl}" target="_blank">${amazonUrl}</a></p>
+                `;
+                codeReader.reset();
+            }
+            if (err && !(err instanceof ZXing.NotFoundException)) {
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
