@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本と悩み解決記録アルバム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .album {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .record {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: calc(50% - 10px);
+            box-sizing: border-box;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>本と悩み解決記録アルバム</h1>
+    
+    <form id="recordForm">
+        <input type="text" id="bookTitle" placeholder="本のタイトル" required>
+        <textarea id="problem" placeholder="悩みの内容" required></textarea>
+        <textarea id="solution" placeholder="解決方法" required></textarea>
+        <button type="submit">記録を追加</button>
+    </form>
+
+    <div id="album" class="album"></div>
+
+    <script>
+        const form = document.getElementById('recordForm');
+        const album = document.getElementById('album');
+        let records = JSON.parse(localStorage.getItem('records')) || [];
+
+        function renderRecords() {
+            album.innerHTML = '';
+            records.forEach((record, index) => {
+                const recordElement = document.createElement('div');
+                recordElement.className = 'record';
+                recordElement.innerHTML = `
+                    <h3>${record.bookTitle}</h3>
+                    <p><strong>悩み:</strong> ${record.problem}</p>
+                    <p><strong>解決方法:</strong> ${record.solution}</p>
+                    <button onclick="deleteRecord(${index})">削除</button>
+                `;
+                album.appendChild(recordElement);
+            });
+        }
+
+        function addRecord(event) {
+            event.preventDefault();
+            const bookTitle = document.getElementById('bookTitle').value;
+            const problem = document.getElementById('problem').value;
+            const solution = document.getElementById('solution').value;
+
+            records.push({ bookTitle, problem, solution });
+            localStorage.setItem('records', JSON.stringify(records));
+            renderRecords();
+            form.reset();
+        }
+
+        function deleteRecord(index) {
+            records.splice(index, 1);
+            localStorage.setItem('records', JSON.stringify(records));
+            renderRecords();
+        }
+
+        form.addEventListener('submit', addRecord);
+        renderRecords();
+    </script>
+</body>
+</html>
