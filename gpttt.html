@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本の推薦アプリ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        input, button { font-size: 16px; padding: 5px; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>本の推薦アプリ</h1>
+    <input type="text" id="keyword" placeholder="キーワードを入力してください">
+    <button onclick="recommendBook()">検索</button>
+    <div id="result"></div>
+
+    <script>
+        const recommendations = {
+            "卒業制作": "ブルーピリオド",
+            "事業企画": "ブルーピリオド"
+        };
+
+        function recommendBook() {
+            const keyword = document.getElementById('keyword').value;
+            const resultDiv = document.getElementById('result');
+
+            if (recommendations.hasOwnProperty(keyword)) {
+                resultDiv.textContent = `「${keyword}」のお薦めの本は「${recommendations[keyword]}」です。`;
+            } else {
+                resultDiv.textContent = `「${keyword}」に対応するお薦めの本は見つかりませんでした。`;
+            }
+        }
+    </script>
+</body>
+</html>

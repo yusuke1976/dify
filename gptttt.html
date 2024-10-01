@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本の推薦アプリ</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>本の推薦アプリ</h1>
+    <input type="text" id="search" placeholder="検索">
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#search').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                var result = '';
+
+                if (searchTerm.includes('卒業制作') || searchTerm.includes('事業企画')) {
+                    result = 'おすすめの本：ブルーピリオド';
+                } else {
+                    result = '該当する本が見つかりません。';
+                }
+
+                $('#result').html(result);
+            });
+        });
+    </script>
+</body>
+</html>
